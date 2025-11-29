@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Информация о системе - Система отправки сообщений</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .info-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .feature-card {
+            background: white;
+            margin: 20px 0;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-left: 4px solid #3498db;
+        }
+        .feature-card h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .method {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            margin-right: 8px;
+        }
+        .get { background: #28a745; }
+        .post { background: #007bff; }
+        .delete { background: #dc3545; }
+        .endpoint {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 10px 0;
+            border-left: 3px solid #3498db;
+        }
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+        }
+        .param-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+        .param-table th, .param-table td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        .param-table th {
+            background: #34495e;
+            color: white;
+        }
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .example-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin: 0 5px;
+        }
+        .status-pending { background: #fff3cd; color: #856404; }
+        .status-sent { background: #d4edda; color: #155724; }
+        .status-failed { background: #f8d7da; color: #721c24; }
+        .nav-tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+            flex-wrap: wrap;
+        }
+        .nav-tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            border-bottom: 2px solid transparent;
+            white-space: nowrap;
+        }
+        .nav-tab.active {
+            border-bottom: 2px solid #3498db;
+            color: #3498db;
+            font-weight: bold;
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+        .feature-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid #ecf0f1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .feature-list li:before {
+            content: "✅";
+            font-size: 14px;
+        }
+        .config-status {
+            background: #e8f5e8;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+            border-left: 4px solid #28a745;
+        }
+        @media (max-width: 768px) {
+            .nav-tabs {
+                flex-direction: column;
+            }
+            .nav-tab {
+                text-align: left;
+                border-bottom: 1px solid #ecf0f1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>ℹ️ Информация о системе</h1>
+            <nav>
+                <button class="nav-btn" onclick="window.location.href='/'">Отправить сообщение</button>
+                <button class="nav-btn" onclick="window.location.href='/'">Адресная книга</button>
+                <button class="nav-btn" onclick="window.location.href='/'">История</button>
+                <button class="nav-btn active" onclick="window.location.href='/info'">Информация</button>
+            </nav>
+        </header>
+
+        <main>
+            <div class="info-container">
+                <div class="nav-tabs">
+                    <button class="nav-tab active" data-tab="overview">Обзор системы</button>
+                    <button class="nav-tab" data-tab="features">Возможности</button>
+                    <button class="nav-tab" data-tab="api">REST API</button>
+                    <button class="nav-tab" data-tab="examples">Примеры</button>
+                    <button class="nav-tab" data-tab="config">Конфигурация</button>
+                </div>
+
+                <!-- Вкладка Обзор системы -->
+                <div id="overview" class="tab-content active">
+                    <div class="feature-card">
+                        <h2>🚀 Система отправки сообщений</h2>
+                        <p>Веб-приложение для массовой отправки сообщений через различные каналы связи с единого интерфейса.</p>
+                        
+                        <h3>📊 Поддерживаемые каналы связи:</h3>
+                        <div class="example-grid">
+                            <div class="example-card">
+                                <h4>📧 Email</h4>
+                                <p>Отправка через SMTP серверы (Dadehard, Yandex)</p>
+                                <ul class="feature-list">
+                                    <li>Поддержка вложений</li>
+                                    <li>HTML форматирование</li>
+                                    <li>Массовая рассылка</li>
+                                </ul>
+                            </div>
+                            <div class="example-card">
+                                <h4>🤖 Telegram</h4>
+                                <p>Отправка через Telegram Bot API</p>
+                                <ul class="feature-list">
+                                    <li>Текстовые сообщения</li>
+                                    <li>Пересылка файлов</li>
+                                    <li>Поддержка @username и chat_id</li>
+                                </ul>
+                            </div>
+                            <div class="example-card">
+                                <h4>📘 VK</h4>
+                                <p>Отправка через VK API сообщества</p>
+                                <ul class="feature-list">
+                                    <li>Личные сообщения</li>
+                                    <li>Вложения документов</li>
+                                    <li>Работа через сообщества</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Вкладка Возможности -->
+                <div id="features" class="tab-content">
+                    <div class="feature-card">
+                        <h3>✉️ Отправить сообщение</h3>
+                        <ul class="feature-list">
+                            <li><strong>Многоканальная отправка</strong> - одновременная отправка через Email, Telegram, VK</li>
+                            <li><strong>Групповые получатели</strong> - выбор из адресной книги + ручной ввод адресов</li>
+                            <li><strong>Вложения файлов</strong> - поддержка до 10MB на файл, множественные вложения</li>
+                            <li><strong>Форматирование текста</strong> - тема и содержание с поддержкой переносов</li>
+                            <li><strong>Отслеживание статусов</strong> - мониторинг доставки по каждому каналу</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>👥 Адресная книга</h3>
+                        <ul class="feature-list">
+                            <li><strong>Централизованное управление</strong> - все контакты в одном месте</li>
+                            <li><strong>Мульти-контакты</strong> - для каждого контакта можно указать Email, Telegram, VK</li>
+                            <li><strong>Быстрый поиск и выбор</strong> - удобный интерфейс для выбора получателей</li>
+                            <li><strong>Валидация данных</strong> - проверка корректности контактной информации</li>
+                            <li><strong>Групповые операции</strong> - массовое управление контактами</li>
+                        </ul>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>📊 История сообщений</h3>
+                        <ul class="feature-list">
+                            <li><strong>Полная история</strong> - архив всех отправленных сообщений</li>
+                            <li><strong>Детальная статистика</strong> - статусы доставки по каждому каналу</li>
+                            <li><strong>Повторная отправка</strong> - возможность переотправки неудавшихся сообщений</li>
+                            <li><strong>Фильтрация и поиск</strong> - быстрый поиск по истории</li>
+                            <li><strong>Временные метки</strong> - точное время отправки и доставки</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Вкладка REST API -->
+                <div id="api" class="tab-content">
+                    <div class="feature-card">
+                        <h3>🔐 Аутентификация</h3>
+                        <p>Если включена аутентификация, используйте Basic Auth:</p>
+                        <div class="code-block">
+// Заголовок Authorization
+Authorization: Basic base64(username:password)
+
+// Пример генерации
+echo -n "admin:password" | base64
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>👥 API Контактов</h3>
+                        
+                        <div class="endpoint">
+                            <div class="method get">GET</div>
+                            <strong>/api/contacts</strong>
+                            <p>Получить список всех контактов</p>
+                            <div class="code-block">
+curl -X GET "http://localhost:3000/api/contacts" \
+  -H "Authorization: Basic YWRtaW46cGFzc3dvcmQ="
+                            </div>
+                        </div>
+
+                        <div class="endpoint">
+                            <div class="method post">POST</div>
+                            <strong>/api/contacts</strong>
+                            <p>Добавить новый контакт</p>
+                            <div class="code-block">
+curl -X POST "http://localhost:3000/api/contacts" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -d '{
+    "name": "Иван Иванов",
+    "email": "ivan@example.com",
+    "telegram_chat_id": "123456789",
+    "vk_id": "id123456"
+  }'
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>📨 API Сообщений</h3>
+                        
+                        <div class="endpoint">
+                            <div class="method post">POST</div>
+                            <strong>/api/send-message</strong>
+                            <p>Отправить сообщение</p>
+                            <div class="code-block">
+curl -X POST "http://localhost:3000/api/send-message" \
+  -H "Authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -F "subject=Тема" \
+  -F "content=Текст сообщения" \
+  -F "recipients=[1,2,3]" \
+  -F "deliveryMethods=[\"email\",\"telegram\"]" \
+  -F "customAddresses=[\"test@example.com\"]" \
+  -F "attachments=@file.pdf"
+                            </div>
+                            <table class="param-table">
+                                <tr><th>Параметр</th><th>Тип</th><th>Обязательный</th><th>Описание</th></tr>
+                                <tr><td>subject</td><td>string</td><td>Нет</td><td>Тема сообщения</td></tr>
+                                <tr><td>content</td><td>string</td><td>Да</td><td>Текст сообщения</td></tr>
+                                <tr><td>recipients</td><td>array</td><td>Нет</td><td>Массив ID контактов</td></tr>
+                                <tr><td>deliveryMethods</td><td>array</td><td>Да</td><td>Методы доставки</td></tr>
+                                <tr><td>customAddresses</td><td>array</td><td>Нет</td><td>Пользовательские адреса</td></tr>
+                                <tr><td>attachments</td><td>file[]</td><td>Нет</td><td>Вложения</td></tr>
+                            </table>
+                        </div>
+
+                        <div class="endpoint">
+                            <div class="method get">GET</div>
+                            <strong>/api/messages</strong>
+                            <p>Получить историю сообщений</p>
+                            <div class="code-block">
+curl -X GET "http://localhost:3000/api/messages" \
+  -H "Authorization: Basic YWRtaW46cGFzc3dvcmQ="
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Вкладка Примеры -->
+                <div id="examples" class="tab-content">
+                    <div class="feature-card">
+                        <h3>🚀 Примеры использования API</h3>
+                        
+                        <div class="example-card">
+                            <h4>📧 Массовая email рассылка</h4>
+                            <div class="code-block">
+curl -X POST "http://localhost:3000/api/send-message" \
+  -H "Authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -F "subject=Еженедельный отчет" \
+  -F "content=Добрый день! Отправляем еженедельный отчет." \
+  -F "recipients=[1,2,3,4,5]" \
+  -F "deliveryMethods=[\"email\"]" \
+  -F "attachments=@report.pdf"
+                            </div>
+                        </div>
+
+                        <div class="example-card">
+                            <h4>🤖 Уведомления в Telegram и VK</h4>
+                            <div class="code-block">
+curl -X POST "http://localhost:3000/api/send-message" \
+  -H "Authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -F "subject=Срочное уведомление" \
+  -F "content=Система была обновлена" \
+  -F "deliveryMethods=[\"telegram\",\"vk\"]" \
+  -F "customAddresses=[\"@username\",\"id123456\"]"
+                            </div>
+                        </div>
+
+                        <div class="example-card">
+                            <h4>🔔 Комплексная рассылка</h4>
+                            <div class="code-block">
+curl -X POST "http://localhost:3000/api/send-message" \
+  -H "Authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -F "subject=Важное сообщение" \
+  -F "content=Информация для всех сотрудников" \
+  -F "recipients=[1,2,3]" \
+  -F "deliveryMethods=[\"email\",\"telegram\",\"vk\"]" \
+  -F "customAddresses=[\"external@company.com\"]" \
+  -F "attachments=@document.pdf"
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Вкладка Конфигурация -->
+                <div id="config" class="tab-content">
+                    <div class="feature-card">
+                        <h3>⚙️ Статус конфигурации</h3>
+                        <div id="configStatus" class="config-status">
+                            Загрузка статуса конфигурации...
+                        </div>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>🔧 Переменные окружения</h3>
+                        <table class="param-table">
+                            <tr><th>Переменная</th><th>Описание</th><th>Пример</th></tr>
+                            <tr><td>PORT</td><td>Порт сервера</td><td>3000</td></tr>
+                            <tr><td>AUTH_USERNAME</td><td>Имя пользователя</td><td>admin</td></tr>
+                            <tr><td>AUTH_PASSWORD</td><td>Пароль</td><td>secret</td></tr>
+                            <tr><td>DADEHARD_EMAIL</td><td>Email Dadehard</td><td>user@dadehard.ru</td></tr>
+                            <tr><td>DADEHARD_PASSWORD</td><td>Пароль Dadehard</td><td>pass123</td></tr>
+                            <tr><td>YANDEX_EMAIL</td><td>Email Yandex</td><td>user@yandex.ru</td></tr>
+                            <tr><td>YANDEX_PASSWORD</td><td>Пароль Yandex</td><td>pass123</td></tr>
+                            <tr><td>TELEGRAM_BOT_TOKEN</td><td>Токен бота Telegram</td><td>123456:ABC-DEF</td></tr>
+                            <tr><td>VK_ACCESS_TOKEN</td><td>Токен доступа VK</td><td>vk1.a.token...</td></tr>
+                        </table>
+                    </div>
+
+                    <div class="feature-card">
+                        <h3>📊 Статусы сообщений</h3>
+                        <p>
+                            <span class="status-badge status-pending">pending</span> - В обработке<br>
+                            <span class="status-badge status-sent">sent</span> - Успешно отправлено<br>
+                            <span class="status-badge status-failed">failed</span> - Ошибка отправки
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Навигация по табам
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                tab.classList.add('active');
+                const tabId = tab.dataset.tab;
+                document.getElementById(tabId).classList.add('active');
+            });
+        });
+
+        // Загрузка статуса конфигурации
+        async function loadConfigStatus() {
+            try {
+                const response = await fetch('/api/config-status');
+                const config = await response.json();
+                
+                let statusHTML = `
+                    <div><strong>🔐 Аутентификация:</strong> ${config.auth.enabled ? '✅ Включена' : '❌ Выключена'}</div>
+                    <div><strong>📧 Email Dadehard:</strong> ${config.email.dadehard.configured ? '✅ Настроен' : '❌ Не настроен'}</div>
+                    <div><strong>📧 Email Yandex:</strong> ${config.email.yandex.configured ? '✅ Настроен' : '❌ Не настроен'}</div>
+                    <div><strong>🤖 Telegram:</strong> ${config.telegram.configured ? '✅ Настроен' : '❌ Не настроен'}</div>
+                    <div><strong>📘 VK:</strong> ${config.vk.configured ? '✅ Настроен' : '❌ Не настроен'}</div>
+                `;
+                
+                document.getElementById('configStatus').innerHTML = statusHTML;
+            } catch (error) {
+                document.getElementById('configStatus').innerHTML = '❌ Не удалось загрузить статус конфигурации';
+            }
+        }
+
+        // Загружаем статус при открытии страницы
+        loadConfigStatus();
+    </script>
+</body>
+</html>

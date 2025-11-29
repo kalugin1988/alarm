@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Система отправки сообщений</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Система отправки сообщений</h1>
+<nav>
+    <button class="nav-btn active" data-tab="send">Отправить сообщение</button>
+    <button class="nav-btn" data-tab="contacts">Адресная книга</button>
+    <button class="nav-btn" data-tab="history">История</button>
+    <button class="nav-btn" onclick="window.location.href='/info'">Информация</button>
+</nav>
+        </header>
+
+        <main>
+            <!-- Вкладка отправки сообщений -->
+            <div id="send" class="tab-content active">
+                <h2>Отправка сообщения</h2>
+                <form id="messageForm" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="subject">Тема:</label>
+                        <input type="text" id="subject" name="subject">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="content">Сообщение:</label>
+                        <textarea id="content" name="content" rows="6" required></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Способы доставки:</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" name="deliveryMethods" value="email"> Email</label>
+                            <label><input type="checkbox" name="deliveryMethods" value="telegram"> Telegram</label>
+                            <label><input type="checkbox" name="deliveryMethods" value="vk"> VK</label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Получатели из адресной книги:</label>
+                        <div id="contactsList" class="contacts-list"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="customAddresses">Дополнительные адреса (через запятую):</label>
+                        <input type="text" id="customAddresses" name="customAddresses" 
+                               placeholder="email@example.com, @telegram_username, id123456">
+                        <small>Форматы: Email, Telegram (@username или chat_id), VK (id123456 или screen_name)</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="attachments">Прикрепленные файлы:</label>
+                        <input type="file" id="attachments" name="attachments" multiple>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Отправить сообщение</button>
+                </form>
+            </div>
+
+            <!-- Вкладка адресной книги -->
+            <div id="contacts" class="tab-content">
+                <h2>Адресная книга</h2>
+                <form id="contactForm">
+                    <div class="form-row">
+                        <input type="text" id="contactName" placeholder="Имя" required>
+                        <input type="email" id="contactEmail" placeholder="Email">
+                        <input type="text" id="contactTelegram" placeholder="Telegram Chat ID">
+                        <input type="text" id="contactVK" placeholder="VK ID (id123456 или screen_name)">
+                        <button type="submit" class="btn-primary">Добавить контакт</button>
+                    </div>
+                </form>
+                <div id="contactsTable" class="table-container"></div>
+            </div>
+
+            <!-- Вкладка истории -->
+            <div id="history" class="tab-content">
+                <h2>История сообщений</h2>
+                <div id="messagesTable" class="table-container"></div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
